@@ -20,7 +20,7 @@ class Basket(Counter):
         session['basket'] = self
 
     def get_items(self):
-        ...
+        return self
 
     def update_items(self):
         ...
