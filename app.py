@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, session, request, abort, Response
 
 from basket import Basket
+from discounts import BuyOneGetOneFreeDiscount, PercentDiscount
 from item import ProductsStore, ItemRecord
 
 
@@ -16,6 +17,12 @@ def create_app():
         s.add('2', ItemRecord(id='2', price='3.21', quantity=11)),
         s.add('3', ItemRecord(id='3', price='20.0', quantity=11)),
         s.add('4', ItemRecord(id='4', price='20.1', quantity=11))
+
+    # setup all supported discounts
+    app.discounts = (
+        BuyOneGetOneFreeDiscount(),
+        PercentDiscount(),
+    )
 
 
     @app.route('/basket', methods=['GET'])
