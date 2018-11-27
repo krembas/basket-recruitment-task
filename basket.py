@@ -1,7 +1,8 @@
 from collections import Counter
+from decimal import Decimal
 from typing import List
 
-from item import ItemRecord
+from item import ItemRecord, ProductsStore
 
 
 class Basket(Counter):
@@ -46,4 +47,14 @@ class Basket(Counter):
 
     def empty(self):
         self.clear()
+
+    def items_sum_price(self):
+        """Generator that provides all items prices"""
+        ps = ProductsStore()
+        total_price = 0
+        for item_id in self:
+            item_price = ps.get(item_id, 'price')
+            if item_price:
+                total_price += item_price * self[item_id]
+        return Decimal(total_price)
 

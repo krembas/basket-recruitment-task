@@ -56,7 +56,15 @@ def create_app():
     def account():
         basket = Basket(session)
 
-        total_price = Decimal('1.23')
+        # calculate total discount for products in basket
+        total_discount = 0
+        basket_price = base_price = basket.items_sum_price()
+        for dsc in app.discounts:
+            discount = dsc.apply(basket, base_price)
+            base_price -= discount
+            total_discount += discount
+
+        total_price = Decimal(basket_price) - Decimal(total_discount)
 
         return jsonify({'total_price': str(total_price.quantize(Decimal('.01')))})
 

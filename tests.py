@@ -43,4 +43,4 @@ def test_basket(test_client):
     # test basket accounting
     with test_client.get('/basket/account') as resp:
         assert resp.status_code == 200
-        assert resp.json == {'total_price': '1.23'}
+        assert resp.json == {'total_price': '0.00'}
