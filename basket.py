@@ -55,6 +55,6 @@ class Basket(Counter):
         for item_id in self:
             item_price = ps.get(item_id, 'price')
             if item_price:
-                total_price += item_price * self[item_id]
+                total_price += Decimal(item_price) * self[item_id]
         return Decimal(total_price)
 

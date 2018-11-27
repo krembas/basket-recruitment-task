@@ -22,7 +22,7 @@ def create_app():
 
     # setup all supported discounts
     app.discounts = (
-        BuyOneGetOneFreeDiscount(),
+        BuyOneGetOneFreeDiscount(discounted_items_ids=('1', '2')),
         PercentDiscount(),
     )
 

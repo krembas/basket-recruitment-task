@@ -40,7 +40,23 @@ def test_basket(test_client):
         assert resp.status_code == 200
         assert resp.json == {'items': []}
 
-    # test basket accounting
+    # test basket accounting on empty basket
     with test_client.get('/basket/account') as resp:
         assert resp.status_code == 200
         assert resp.json == {'total_price': '0.00'}
+
+    # test "buy one get one free"
+    data = {'items': [{'id': '1', 'qty': 1}]}  # add one product for $1.23
+    with test_client.put('/basket', json=data) as resp:
+        assert resp.status_code == 200
+    with test_client.get('/basket/account') as resp:
+        assert resp.status_code == 200
+        assert resp.json == {'total_price': '1.23'}
+    data = {'items': [{'id': '1', 'qty': 2}]}  # then will be $1.23*2 (one free)
+    with test_client.put('/basket', json=data) as resp:
+        assert resp.status_code == 200
+    with test_client.get('/basket/account') as resp:
+        assert resp.status_code == 200
+        assert resp.json == {'total_price': '2.46'}
+
+
