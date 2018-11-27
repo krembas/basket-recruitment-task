@@ -7,6 +7,12 @@ from discounts import BuyOneGetOneFreeDiscount, PercentDiscount
 from item import ProductsStore, ItemRecord
 
 
+def has_loyalty_card():
+    """Abstraction of required user property used for discounts"""
+    if session.get('has_loyalty_card'):
+        return True
+
+
 def create_app():
     """Flask application factory"""
     app = Flask(__name__)
@@ -24,6 +30,8 @@ def create_app():
     app.discounts = (
         BuyOneGetOneFreeDiscount(discounted_items_ids=('1', '2')),
         PercentDiscount(percent_discount=Decimal(10.0), on_total=Decimal(20.0)),
+        PercentDiscount(percent_discount=Decimal(2.0), on_total=Decimal(0),
+                        conditions=has_loyalty_card),
     )
 
 

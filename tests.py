@@ -66,3 +66,9 @@ def test_basket(test_client):
         assert resp.status_code == 200
         assert resp.json == {'total_price': '20.21'}  # 20 + 2*1.23 * 0.90
 
+    # test "2% off for loyalty card user" discount
+    with test_client.session_transaction() as sess:
+        sess['has_loyalty_card'] = True
+    with test_client.get('/basket/account') as resp:
+        assert resp.status_code == 200
+        assert resp.json == {'total_price': '19.81'}  # 20.21 * 0.98
