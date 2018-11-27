@@ -1,4 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, session
+
+from basket import Basket
 
 
 def create_app():
@@ -9,15 +11,18 @@ def create_app():
     @app.route('/basket', methods=['GET'])
     def get_items():
         """Get list of basket items"""
+        basket = Basket(session)
         return jsonify()
 
     @app.route('/basket', methods=['PUT'])
     def update_items():
+        basket = Basket(session)
         """Updates (add/remove) basket items"""
         return jsonify()
 
     @app.route('/basket', methods=['DELETE'])
     def empty():
+        basket = Basket(session)
         """Make basket empty"""
         return jsonify()
 
