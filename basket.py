@@ -37,8 +37,9 @@ class Basket(Counter):
         for item in crap_items:
                 del self[item]
 
-    def get_items(self, items: List[ItemRecord]):
-        return self
+    def get_items(self):
+        for item_id in self:
+            yield item_id, self[item_id]
 
     def update_items(self, items: List[ItemRecord]):
         for item in items:

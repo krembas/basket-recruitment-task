@@ -16,7 +16,6 @@ def test_basket(test_client):
         assert resp.status_code == 200
         assert resp.json == {'items': []}
 
-
     # test adding items to basket
     data = {'items': [{'id': '1', 'qty': 1}, {'id': '2', 'qty': 2}]}
     with test_client.put('/basket', json=data) as resp:
@@ -59,4 +58,11 @@ def test_basket(test_client):
         assert resp.status_code == 200
         assert resp.json == {'total_price': '2.46'}
 
+    # test "10% off for $20" discount
+    data = {'items': [{'id': '3', 'qty': 1}]}  # $20
+    with test_client.put('/basket', json=data) as resp:
+        assert resp.status_code == 200
+    with test_client.get('/basket/account') as resp:
+        assert resp.status_code == 200
+        assert resp.json == {'total_price': '20.21'}  # 20 + 2*1.23 * 0.90
 

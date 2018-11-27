@@ -25,5 +25,12 @@ class BuyOneGetOneFreeDiscount(Discount):
 
 
 class PercentDiscount(Discount):
+    def __init__(self, percent_discount: Decimal, on_total: Decimal):
+        self.on_total = on_total
+        self.percent_discount = percent_discount
+
     def apply(self, basket: Basket, base_price: Decimal):
-        return Decimal(0)
+        if base_price > self.on_total:
+            return Decimal(base_price * self.percent_discount) / 100
+        else:
+            return Decimal(0)

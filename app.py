@@ -23,7 +23,7 @@ def create_app():
     # setup all supported discounts
     app.discounts = (
         BuyOneGetOneFreeDiscount(discounted_items_ids=('1', '2')),
-        PercentDiscount(),
+        PercentDiscount(percent_discount=Decimal(10.0), on_total=Decimal(20.0)),
     )
 
 
@@ -31,7 +31,9 @@ def create_app():
     def get_items():
         """Get list of basket items"""
         basket = Basket(session)
-        return jsonify({'items': [{'id': id, 'qty': qty} for id, qty in basket.items()]})
+        # items =
+        return jsonify({'items': [{'id': id, 'qty': qty} for id, qty in basket.get_items()]})
+        # return jsonify({'items': [{item.id: item.quantity} for item in basket.get_items()]})
 
     @app.route('/basket', methods=['PUT'])
     def update_items():
