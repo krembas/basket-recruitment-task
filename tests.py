@@ -33,7 +33,6 @@ def test_basket(test_client):
         assert resp.status_code == 200
         assert resp.json == {'items': [{'id': '2', 'qty': 2}]}
 
-
     # test emptying basket
     with test_client.delete('/basket') as resp:
         assert resp.status_code == 204
@@ -41,4 +40,7 @@ def test_basket(test_client):
         assert resp.status_code == 200
         assert resp.json == {'items': []}
 
-
+    # test basket accounting
+    with test_client.get('/basket/account') as resp:
+        assert resp.status_code == 200
+        assert resp.json == {'total_price': '1.23'}

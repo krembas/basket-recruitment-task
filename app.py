@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from flask import Flask, jsonify, session, request, abort, Response
 
 from basket import Basket
@@ -49,6 +51,14 @@ def create_app():
         basket.empty()
         """Make basket empty"""
         return Response(status=204)
+
+    @app.route('/basket/account')
+    def account():
+        basket = Basket(session)
+
+        total_price = Decimal('1.23')
+
+        return jsonify({'total_price': str(total_price.quantize(Decimal('.01')))})
 
     return app
 
